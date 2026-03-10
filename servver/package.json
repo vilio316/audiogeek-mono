@@ -1,0 +1,22 @@
+{
+  "name": "audiogeek-server",
+  "version": "1.0.0",
+  "description": "Server for Audiogeek app (v1)",
+  "license": "ISC",
+  "author": "David Atem",
+  "type": "commonjs",
+  "main": "server.mjs",
+  "scripts": {
+    "dev": "nodemon server.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@better-auth/mongo-adapter": "^1.5.3",
+    "better-auth": "^1.5.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "mongodb": "^7.1.0",
+    "nodemon": "^3.1.14"
+  }
+}
