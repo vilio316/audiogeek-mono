@@ -5,9 +5,19 @@ import { TopTracksPreview } from "./TopTracks";
 import RecentlyPlayed from "./RecentlyPlayed";
 import { FaHamburger } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
+import { useNavigate } from "react-router";
 
 export default function DashboardPage() {
   const [userDetails, updateUserDetails] = useState({} as User);
+  const navigate = useNavigate();
+
+  async function logout() {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => navigate("/"),
+      },
+    });
+  }
 
   useEffect(() => {
     const checkUser = async () => {
@@ -28,7 +38,7 @@ export default function DashboardPage() {
         <p className="text-2xl font-bold p-4 w-[90%]">Audiogeek</p>
         <div className="flex gap-x-4">
           <FaHamburger className="inline w-8 h-8 justify-self-end" />
-          <FiLogOut className="w-8 h-8 inline" />
+          <FiLogOut className="w-8 h-8 inline" onClick={logout} />
         </div>
       </div>
       <div className="p-4 my-2 flex gap-x-2 items-center">
