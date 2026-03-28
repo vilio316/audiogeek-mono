@@ -1,3 +1,4 @@
+import { FaSpotify } from "react-icons/fa6";
 import { authClient } from "./lib/authClient";
 
 function App() {
@@ -9,9 +10,13 @@ function App() {
   }
 
   return (
-    <div className="grid place-items-center">
-      <button onClick={login} className="block">
-        Log in with Spotify
+    <div className="grid place-items-center h-screen w-full">
+      <button
+        onClick={login}
+        className="flex bg-emerald-500 w-1/4 rounded-2xl p-2 justify-center items-center gap-x-4"
+      >
+        <FaSpotify className="inline h-6 w-6" />
+        <span className="text-xl font-bold">Log in with Spotify</span>
       </button>
     </div>
   );
