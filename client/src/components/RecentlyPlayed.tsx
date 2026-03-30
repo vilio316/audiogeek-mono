@@ -18,7 +18,7 @@ export default function RecentlyPlayed() {
   }, []);
 
   return (
-    <div>
+    <div className="p-6">
       <p className="text-xl font-bold my-4">Recently Played</p>
       <div>
         {recentlyPlayed.slice(0, 5).map((item: any) => (

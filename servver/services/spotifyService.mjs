@@ -115,6 +115,7 @@ export class SpotifyService {
     });
 
     if (!res.ok) {
+      console.log(res.status, res.statusText);
       throw new Error("Spotify API request failed");
     }
 

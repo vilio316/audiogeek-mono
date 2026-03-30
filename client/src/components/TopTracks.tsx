@@ -49,9 +49,12 @@ export function TopTracksPreview() {
 
   useEffect(() => {
     const fetchTopTracks = async () => {
-      const resultsReq = await fetch("http://127.0.0.1:7777/apii/top-tracks", {
-        credentials: "include",
-      });
+      const resultsReq = await fetch(
+        "http://127.0.0.1:7777/apii/top-tracks/short_term",
+        {
+          credentials: "include",
+        },
+      );
       const resultResponse = await resultsReq.json();
       updateValue(resultResponse.items);
     };
@@ -63,7 +66,7 @@ export function TopTracksPreview() {
       <p className="font-bold text-2xl">Your Top Tracks This Month</p>
 
       <div className="flex gap-x-4 items-center">
-        <div className="flex md:gap-4 md:py-2 w-[90%] overflow-x-scroll">
+        <div className="flex md:gap-6 gap-x-4 md:py-2 w-[90%] overflow-x-scroll">
           {value.map((item: any) => (
             <div key={item.id} className="inline-block shrink-0">
               <div className="grid place-items-center">
@@ -79,7 +82,7 @@ export function TopTracksPreview() {
                   justifyContent: "center",
                 }}
               >
-                <p className="text-center truncate w-40 md:my-2 ">
+                <p className="text-center truncate w-40 md:my-2 font-bold ">
                   {item.name}
                 </p>
               </div>
