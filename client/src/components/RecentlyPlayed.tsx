@@ -10,7 +10,7 @@ export default function RecentlyPlayed() {
     queryFn: async () => {
       {
         const recentlyRequest = await fetch(
-          "http://127.0.0.1:7777/apii/recently-played",
+          "http://https://audiogeek-mono.onrender.com//apii/recently-played",
           {
             credentials: "include",
           },
