@@ -16,6 +16,7 @@ export default function TopTracks({ time_range }: { time_range: string }) {
       );
       return await resultsReq.json();
     },
+    staleTime: 24 * 60 * 60 * 1000,
   });
 
   return (
@@ -47,7 +48,7 @@ export default function TopTracks({ time_range }: { time_range: string }) {
 }
 
 export function TopTracksPreview() {
-  const { data, error, status } = useQuery({
+  const { data } = useQuery({
     queryKey: ["top_tracks_short"],
     queryFn: async () => {
       const resultsReq = await fetch(
@@ -58,8 +59,10 @@ export function TopTracksPreview() {
       );
       return await resultsReq.json();
     },
+    staleTime: 24 * 60 * 60 * 1000,
   });
 
+  console.log(data);
   return (
     <div className="p-4">
       <p className="font-bold text-2xl">Your Top Tracks This Month</p>
@@ -109,6 +112,7 @@ export function TopArtists({ range }: { range: string }) {
       );
       return await resultsReq.json();
     },
+    staleTime: 24 * 60 * 60 * 1000,
   });
 
   return (
@@ -160,6 +164,7 @@ export function TopItemsImage({
       const profileRes = await profile.json();
       return profileRes;
     },
+    staleTime: 7 * 24 * 60 * 60 * 1000,
   });
 
   return (
@@ -229,6 +234,7 @@ function ArtistsImageView({ time_range }: { time_range: string }) {
       const resultResponse = await resultsReq.json();
       return resultResponse;
     },
+    staleTime: 24 * 60 * 60 * 1000,
   });
 
   return (
@@ -263,6 +269,7 @@ function TracksShort({ time_range }: { time_range: string }) {
       );
       return await resultsReq.json();
     },
+    staleTime: 24 * 60 * 60 * 1000,
   });
 
   return (
