@@ -3,6 +3,7 @@ import { auth } from "./src/auth/auth.mjs";
 import cors from "cors";
 import { toNodeHandler } from "better-auth/node";
 import spotifyRouter from "./apiRouter.mjs";
+import geniusRouter from "./geniusRouter.mjs";
 
 const app = express();
 app.use(
@@ -13,6 +14,7 @@ app.use(
 );
 
 app.use("/apii", spotifyRouter);
+app.use("/genius", geniusRouter);
 app.use("/api/auth", toNodeHandler(auth));
 
 app.listen(7777, () => console.log("Listening on port 7777"));
