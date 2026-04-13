@@ -8,6 +8,16 @@ export const auth = betterAuth({
   secret: process.env.BETTER_AUTH_SECRET,
   baseURL: process.env.BETTER_AUTH_URL,
   database: mongodbAdapter(mongo),
+  advanced: {
+    cookies: {
+      state: {
+        attributes: {
+          sameSite: "none",
+          secure: true,
+        },
+      },
+    },
+  },
   socialProviders: {
     spotify: {
       clientId: process.env.SPOTIFY_CLIENT_ID,

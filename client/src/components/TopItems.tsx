@@ -9,7 +9,7 @@ export default function TopTracks({ time_range }: { time_range: string }) {
     queryKey: ["top_tracks", time_range],
     queryFn: async () => {
       const resultsReq = await fetch(
-        `http://https://audiogeek-mono.onrender.com//apii/top-tracks/${time_range}`,
+        `https://audiogeek-mono.onrender.com/apii/top-tracks/${time_range}`,
         {
           credentials: "include",
         },
@@ -51,7 +51,7 @@ export function TopTracksPreview() {
     queryKey: ["top_tracks_short"],
     queryFn: async () => {
       const resultsReq = await fetch(
-        "http://https://audiogeek-mono.onrender.com//apii/top-tracks/short_term",
+        "https://audiogeek-mono.onrender.com/apii/top-tracks/short_term",
         {
           credentials: "include",
         },
@@ -102,7 +102,7 @@ export function TopArtists({ range }: { range: string }) {
     queryKey: ["top_artists", range],
     queryFn: async () => {
       const resultsReq = await fetch(
-        `http://https://audiogeek-mono.onrender.com//apii/top-artists/${range}`,
+        `https://audiogeek-mono.onrender.com/apii/top-artists/${range}`,
         {
           credentials: "include",
         },
@@ -152,7 +152,7 @@ export function TopItemsImage({
     queryKey: ["profile"],
     queryFn: async () => {
       const profile = await fetch(
-        "http://https://audiogeek-mono.onrender.com//apii/profile",
+        "https://audiogeek-mono.onrender.com/apii/profile",
         {
           credentials: "include",
         },
@@ -221,7 +221,7 @@ function ArtistsImageView({ time_range }: { time_range: string }) {
     queryKey: ["top_artists", time_range],
     queryFn: async () => {
       const resultsReq = await fetch(
-        `http://https://audiogeek-mono.onrender.com//apii/top-artists/${time_range}`,
+        `https://audiogeek-mono.onrender.com/apii/top-artists/${time_range}`,
         {
           credentials: "include",
         },
@@ -256,7 +256,7 @@ function TracksShort({ time_range }: { time_range: string }) {
     queryKey: ["top_tracks", time_range],
     queryFn: async () => {
       const resultsReq = await fetch(
-        `http://https://audiogeek-mono.onrender.com//apii/top-tracks/${time_range}`,
+        `https://audiogeek-mono.onrender.com/apii/top-tracks/${time_range}`,
         {
           credentials: "include",
         },
