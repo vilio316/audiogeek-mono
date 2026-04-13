@@ -1,21 +1,25 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 export default function RecentlyPlayed() {
-  const [recentlyPlayed, updateRecentlyPlayed] = useState([]);
-
-  useEffect(() => {
-    const fetchRecently = async () => {
-      const recentlyRequest = await fetch(
-        "http://127.0.0.1:7777/apii/recently-played",
-        {
-          credentials: "include",
-        },
-      );
-      const recentlyRes = await recentlyRequest.json();
-      updateRecentlyPlayed(recentlyRes.items);
-    };
-    fetchRecently();
-  }, []);
+  const {
+    data: recentlyPlayed,
+    error,
+    status,
+  } = useQuery({
+    queryKey: ["recently-played"],
+    queryFn: async () => {
+      {
+        const recentlyRequest = await fetch(
+          "http://127.0.0.1:7777/apii/recently-played",
+          {
+            credentials: "include",
+          },
+        );
+        const recentlyRes = await recentlyRequest.json();
+        return recentlyRes.items;
+      }
+    },
+  });
 
   return (
     <div className="p-6">
