@@ -1,11 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 export default function RecentlyPlayed() {
-  const {
-    data: recentlyPlayed,
-    error,
-    status,
-  } = useQuery({
+  const { data: recentlyPlayed, isSuccess } = useQuery({
     queryKey: ["recently-played"],
     queryFn: async () => {
       {
@@ -26,7 +22,7 @@ export default function RecentlyPlayed() {
     <div className="p-6">
       <p className="text-xl font-bold my-4">Recently Played</p>
       <div>
-        {recentlyPlayed &&
+        {isSuccess &&
           recentlyPlayed.slice(0, 5).map((item: any) => (
             <div key={item.id} className="flex gap-x-4 items-center my-2 p-2">
               <div className="flex items-center">

@@ -5,7 +5,7 @@ import { FiArrowRight } from "react-icons/fi";
 import { Link } from "react-router";
 
 export default function TopTracks({ time_range }: { time_range: string }) {
-  const { data: value } = useQuery({
+  const { data: value, isSuccess } = useQuery({
     queryKey: ["top_tracks", time_range],
     queryFn: async () => {
       const resultsReq = await fetch(
@@ -22,60 +22,16 @@ export default function TopTracks({ time_range }: { time_range: string }) {
   return (
     <div className="p-2">
       <div className="grid md:grid-cols-5 md:gap-4 md:p-2">
-        {value.map((item: any) => (
-          <div key={item.id}>
-            <div className="grid place-items-center">
-              <img
-                className=""
-                src={item.album.images[0].url}
-                alt={item.name}
-                loading="lazy"
-              />
-            </div>
-            <div
-              className="grid"
-              style={{
-                justifyContent: "center",
-              }}
-            >
-              <p className="text-center truncate font-bold">{item.name}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-export function TopTracksPreview() {
-  const { data } = useQuery({
-    queryKey: ["top_tracks_short"],
-    queryFn: async () => {
-      const resultsReq = await fetch(
-        "https://audiogeek-mono.onrender.com/apii/top-tracks/short_term",
-        {
-          credentials: "include",
-        },
-      );
-      return await resultsReq.json();
-    },
-    staleTime: 24 * 60 * 60 * 1000,
-  });
-
-  console.log(data);
-  return (
-    <div className="p-4">
-      <p className="font-bold text-2xl">Your Top Tracks This Month</p>
-
-      <div className="flex gap-x-4 items-center">
-        <div className="flex md:gap-6 gap-x-4 md:py-2 w-[90%] overflow-x-scroll">
-          {data.map((item: any) => (
-            <div key={item.id} className="inline-block shrink-0">
+        {!value.error &&
+          isSuccess &&
+          value.map((item: any) => (
+            <div key={item.id}>
               <div className="grid place-items-center">
                 <img
-                  className="h-48 w-48"
+                  className=""
                   src={item.album.images[0].url}
                   alt={item.name}
+                  loading="lazy"
                 />
               </div>
               <div
@@ -84,12 +40,61 @@ export function TopTracksPreview() {
                   justifyContent: "center",
                 }}
               >
-                <p className="text-center truncate w-40 md:my-2 font-bold ">
-                  {item.name}
-                </p>
+                <p className="text-center truncate font-bold">{item.name}</p>
               </div>
             </div>
           ))}
+      </div>
+    </div>
+  );
+}
+
+export function TopTracksPreview() {
+  const { data, isSuccess, isPending } = useQuery({
+    queryKey: ["top_tracks_short"],
+    queryFn: async () => {
+      const resultsReq = await fetch(
+        "https://audiogeek-mono.onrender.com/apii/top-tracks/short_term",
+        {
+          credentials: "include",
+        },
+      );
+      const resultsRes = await resultsReq.json();
+      return resultsRes;
+    },
+    staleTime: 24 * 60 * 60 * 1000,
+  });
+
+  return (
+    <div className="p-4">
+      <p className="font-bold text-2xl">Your Top Tracks This Month</p>
+
+      <div className="flex gap-x-4 items-center">
+        <div className="flex md:gap-6 gap-x-4 md:py-2 w-[90%] overflow-x-scroll">
+          {isPending && <p>Still looking...</p>}
+
+          {isSuccess &&
+            data.map((item: any) => (
+              <div key={item.id} className="inline-block shrink-0">
+                <div className="grid place-items-center">
+                  <img
+                    className="h-48 w-48"
+                    src={item.album.images[0].url}
+                    alt={item.name}
+                  />
+                </div>
+                <div
+                  className="grid"
+                  style={{
+                    justifyContent: "center",
+                  }}
+                >
+                  <p className="text-center truncate w-40 md:my-2 font-bold ">
+                    {item.name}
+                  </p>
+                </div>
+              </div>
+            ))}
         </div>
 
         <Link to="/top">
@@ -168,56 +173,60 @@ export function TopItemsImage({
   });
 
   return (
-    <div className="text-white p-2 md:p-4">
-      <div className="md:flex gap-x-4 p-2 items-center">
-        <img
-          src={profileDetails.images ? profileDetails.images[0].url : null}
-          alt="User PFP"
-          className="rounded-full h-20"
-        />
-        <div>
-          <p className="font-bold text-2xl">
-            Hi, {profileDetails.display_name}
-          </p>
-          <p>Here's your {timeframe} listening review!</p>
-        </div>
-      </div>
-
-      <div className="md:grid md:grid-cols-2">
-        <div className="tabs flex items-center">
-          <FaLessThan
-            onClick={() => {
-              if (activeTab !== 0) {
-                changeActiveTab(0);
-              } else {
-                changeActiveTab(1);
-              }
-            }}
-          />
-          <div>
-            {activeTab === 1 ? (
-              <ArtistsImageView time_range={timeframe} />
-            ) : (
-              <TracksShort time_range={timeframe} />
-            )}
+    <>
+      {profileDetails && (
+        <div className="text-white p-2 md:p-4">
+          <div className="md:flex gap-x-4 p-2 items-center">
+            <img
+              src={profileDetails.images ? profileDetails.images[0].url : null}
+              alt="User PFP"
+              className="rounded-full h-20"
+            />
+            <div>
+              <p className="font-bold text-2xl">
+                Hi, {profileDetails.display_name}
+              </p>
+              <p>Here's your {timeframe} listening review!</p>
+            </div>
           </div>
-          <FaGreaterThan
-            onClick={() => {
-              if (activeTab < 1) {
-                changeActiveTab(1);
-              } else {
-                changeActiveTab(0);
-              }
-            }}
-          />
+
+          <div className="md:grid md:grid-cols-2">
+            <div className="tabs flex items-center">
+              <FaLessThan
+                onClick={() => {
+                  if (activeTab !== 0) {
+                    changeActiveTab(0);
+                  } else {
+                    changeActiveTab(1);
+                  }
+                }}
+              />
+              <div>
+                {activeTab === 1 ? (
+                  <ArtistsImageView time_range={timeframe} />
+                ) : (
+                  <TracksShort time_range={timeframe} />
+                )}
+              </div>
+              <FaGreaterThan
+                onClick={() => {
+                  if (activeTab < 1) {
+                    changeActiveTab(1);
+                  } else {
+                    changeActiveTab(0);
+                  }
+                }}
+              />
+            </div>
+            <div className="image_html" ref={elementRef}></div>
+          </div>
+          <div className="text-right w-full">
+            <p className="font-bold text-xl">audiogeek</p>
+            <p>&copy; 2026</p>
+          </div>
         </div>
-        <div className="image_html" ref={elementRef}></div>
-      </div>
-      <div className="text-right w-full">
-        <p className="font-bold text-xl">audiogeek</p>
-        <p>&copy; 2026</p>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 
@@ -240,25 +249,27 @@ function ArtistsImageView({ time_range }: { time_range: string }) {
   return (
     <div className="p-2 md:p-4">
       <p className="font-bold text-lg underline">Your Top Artists</p>
-      {artists.slice(0, 5).map((artist: any) => (
-        <div className="flex gap-x-1 md:gap-x-2 items-center" key={artist.id}>
-          <img
-            className="md:h-16 md:w-16 w-12 h-12 md:my-4 my-2 rounded-full"
-            src={artist.images[0].url}
-            alt={artist.name}
-            loading="lazy"
-          />
-          <p className="text-left indent-2 md:indent-4 font-bold">
-            {artist.name}
-          </p>
-        </div>
-      ))}
+
+      {artists &&
+        artists.slice(0, 5).map((artist: any) => (
+          <div className="flex gap-x-1 md:gap-x-2 items-center" key={artist.id}>
+            <img
+              className="md:h-16 md:w-16 w-12 h-12 md:my-4 my-2 rounded-full"
+              src={artist.images[0].url}
+              alt={artist.name}
+              loading="lazy"
+            />
+            <p className="text-left indent-2 md:indent-4 font-bold">
+              {artist.name}
+            </p>
+          </div>
+        ))}
     </div>
   );
 }
 
 function TracksShort({ time_range }: { time_range: string }) {
-  const { data, error, status } = useQuery({
+  const { data, error, isSuccess } = useQuery({
     queryKey: ["top_tracks", time_range],
     queryFn: async () => {
       const resultsReq = await fetch(
@@ -274,26 +285,27 @@ function TracksShort({ time_range }: { time_range: string }) {
 
   return (
     <div className="grid md:grid-cols-5 md:gap-4 md:p-2">
-      {data.map((item: any) => (
-        <div key={item.id}>
-          <div className="grid place-items-center">
-            <img
-              className=""
-              src={item.album.images[0].url}
-              alt={item.name}
-              loading="lazy"
-            />
+      {isSuccess &&
+        data.map((item: any) => (
+          <div key={item.id}>
+            <div className="grid place-items-center">
+              <img
+                className=""
+                src={item.album.images[0].url}
+                alt={item.name}
+                loading="lazy"
+              />
+            </div>
+            <div
+              className="grid"
+              style={{
+                justifyContent: "center",
+              }}
+            >
+              <p className="text-center truncate font-bold">{item.name}</p>
+            </div>
           </div>
-          <div
-            className="grid"
-            style={{
-              justifyContent: "center",
-            }}
-          >
-            <p className="text-center truncate font-bold">{item.name}</p>
-          </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 }

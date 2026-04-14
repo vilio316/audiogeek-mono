@@ -9,13 +9,10 @@ export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
   database: mongodbAdapter(mongo),
   advanced: {
-    cookies: {
-      state: {
-        attributes: {
-          sameSite: "none",
-          secure: true,
-        },
-      },
+    defaultCookieAttributes: {
+      sameSite: "none",
+      secure: true,
+      httpOnly: true,
     },
   },
   socialProviders: {

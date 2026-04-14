@@ -27,6 +27,9 @@ export default function DashboardPage() {
       if (!error && data) {
         updateUserDetails(data.user);
       }
+      if (error) {
+        window.alert("Login Unsuccessful");
+      }
     };
     checkUser();
   }, []);
@@ -55,8 +58,9 @@ export default function DashboardPage() {
           <p>Your Spotify ID : {id}</p>
         </div>
       </div>
+      {/*
       <TopTracksPreview />
-      <RecentlyPlayed />
+      <RecentlyPlayed /> */}
       <p className="w-full text-center">
         Audiogeek. Developed in 2026 by vilio316{" "}
       </p>
