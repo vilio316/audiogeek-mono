@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { FaGreaterThan, FaLessThan } from "react-icons/fa6";
 import { FiArrowRight } from "react-icons/fi";
 import { Link } from "react-router";
+import * as htmlToImage from "html-to-image";
 
 export default function TopTracks({ time_range }: { time_range: string }) {
   const { data: value, isSuccess } = useQuery({
@@ -14,18 +15,18 @@ export default function TopTracks({ time_range }: { time_range: string }) {
           credentials: "include",
         },
       );
-      return await resultsReq.json();
+      const resultsResponse = await resultsReq.json();
+      return resultsResponse.items;
     },
     staleTime: 24 * 60 * 60 * 1000,
   });
 
   return (
     <div className="p-2">
-      <div className="grid md:grid-cols-5 md:gap-4 md:p-2">
-        {!value.error &&
-          isSuccess &&
+      <div className="grid md:grid-cols-5 grid-cols-3 md:gap-4 gap-2 md:p-2">
+        {isSuccess &&
           value.map((item: any) => (
-            <div key={item.id}>
+            <Link key={item.id} to={`/song/${item.id}`}>
               <div className="grid place-items-center">
                 <img
                   className=""
@@ -42,7 +43,7 @@ export default function TopTracks({ time_range }: { time_range: string }) {
               >
                 <p className="text-center truncate font-bold">{item.name}</p>
               </div>
-            </div>
+            </Link>
           ))}
       </div>
     </div>
@@ -60,7 +61,7 @@ export function TopTracksPreview() {
         },
       );
       const resultsRes = await resultsReq.json();
-      return resultsRes;
+      return resultsRes.items;
     },
     staleTime: 24 * 60 * 60 * 1000,
   });
@@ -68,14 +69,18 @@ export function TopTracksPreview() {
   return (
     <div className="p-4">
       <p className="font-bold text-2xl">Your Top Tracks This Month</p>
-
+      <p>{import.meta.env.VITE_TEST_KEY}</p>
       <div className="flex gap-x-4 items-center">
         <div className="flex md:gap-6 gap-x-4 md:py-2 w-[90%] overflow-x-scroll">
           {isPending && <p>Still looking...</p>}
 
           {isSuccess &&
             data.map((item: any) => (
-              <div key={item.id} className="inline-block shrink-0">
+              <Link
+                key={item.id}
+                className="inline-block shrink-0"
+                to={`/song/${item.id}`}
+              >
                 <div className="grid place-items-center">
                   <img
                     className="h-48 w-48"
@@ -83,17 +88,12 @@ export function TopTracksPreview() {
                     alt={item.name}
                   />
                 </div>
-                <div
-                  className="grid"
-                  style={{
-                    justifyContent: "center",
-                  }}
-                >
+                <div className="grid justify-center">
                   <p className="text-center truncate w-40 md:my-2 font-bold ">
                     {item.name}
                   </p>
                 </div>
-              </div>
+              </Link>
             ))}
         </div>
 
@@ -125,7 +125,7 @@ export function TopArtists({ range }: { range: string }) {
       <div className="grid md:grid-cols-5 gap-4">
         {artistsArray ? (
           <>
-            {artistsArray.map((item: any) => (
+            {artistsArray.items.map((item: any) => (
               <div key={item.id}>
                 <div className="place-items-center grid mt-3">
                   <img
@@ -148,13 +148,12 @@ export function TopArtists({ range }: { range: string }) {
 }
 
 export function TopItemsImage({
-  object,
   timeframe,
 }: {
   object?: any;
   timeframe: string;
 }) {
-  const elementRef = useRef(null);
+  const elementRef = useRef<HTMLDivElement | null>(null);
   const [activeTab, changeActiveTab] = useState(0);
 
   const { data: profileDetails } = useQuery({
@@ -172,10 +171,29 @@ export function TopItemsImage({
     staleTime: 7 * 24 * 60 * 60 * 1000,
   });
 
+  const downloadHandler = async (timeframe: string) => {
+    if (!elementRef.current) return;
+    const dataURL = await htmlToImage.toPng(elementRef.current, {
+      quality: 0.75,
+    });
+
+    const link = document.createElement("a");
+    link.download = `user_review-${timeframe}.png`;
+    link.href = dataURL;
+    link.click();
+  };
+
+  const resolveTimeRangeToString = (time_range: string) => {
+    if (time_range === "short_term") return "4-week";
+    if (time_range === "medium_term") return "6-month";
+    if (time_range === "long_term") return "1 year+";
+    console.log(time_range);
+  };
+
   return (
     <>
       {profileDetails && (
-        <div className="text-white p-2 md:p-4">
+        <div className="text-white p-2 md:p-4" ref={elementRef}>
           <div className="md:flex gap-x-4 p-2 items-center">
             <img
               src={profileDetails.images ? profileDetails.images[0].url : null}
@@ -186,12 +204,16 @@ export function TopItemsImage({
               <p className="font-bold text-2xl">
                 Hi, {profileDetails.display_name}
               </p>
-              <p>Here's your {timeframe} listening review!</p>
+              <p>
+                Here's your {resolveTimeRangeToString(timeframe)} listening
+                review!
+              </p>
             </div>
+            <button onClick={() => downloadHandler(timeframe)}>Download</button>
           </div>
 
-          <div className="md:grid md:grid-cols-2">
-            <div className="tabs flex items-center">
+          <div className="grid">
+            <div className="tabs flex items-center md:gap-x-6">
               <FaLessThan
                 onClick={() => {
                   if (activeTab !== 0) {
@@ -218,7 +240,6 @@ export function TopItemsImage({
                 }}
               />
             </div>
-            <div className="image_html" ref={elementRef}></div>
           </div>
           <div className="text-right w-full">
             <p className="font-bold text-xl">audiogeek</p>
@@ -241,7 +262,7 @@ function ArtistsImageView({ time_range }: { time_range: string }) {
         },
       );
       const resultResponse = await resultsReq.json();
-      return resultResponse;
+      return resultResponse.items;
     },
     staleTime: 24 * 60 * 60 * 1000,
   });
@@ -254,7 +275,7 @@ function ArtistsImageView({ time_range }: { time_range: string }) {
         artists.slice(0, 5).map((artist: any) => (
           <div className="flex gap-x-1 md:gap-x-2 items-center" key={artist.id}>
             <img
-              className="md:h-16 md:w-16 w-12 h-12 md:my-4 my-2 rounded-full"
+              className="w-12 h-12 md:my-4 my-2 rounded-full"
               src={artist.images[0].url}
               alt={artist.name}
               loading="lazy"
@@ -269,7 +290,7 @@ function ArtistsImageView({ time_range }: { time_range: string }) {
 }
 
 function TracksShort({ time_range }: { time_range: string }) {
-  const { data, error, isSuccess } = useQuery({
+  const { data, isSuccess } = useQuery({
     queryKey: ["top_tracks", time_range],
     queryFn: async () => {
       const resultsReq = await fetch(
@@ -278,30 +299,27 @@ function TracksShort({ time_range }: { time_range: string }) {
           credentials: "include",
         },
       );
-      return await resultsReq.json();
+      const resultsResponse = await resultsReq.json();
+      return resultsResponse.items;
     },
     staleTime: 24 * 60 * 60 * 1000,
   });
 
   return (
-    <div className="grid md:grid-cols-5 md:gap-4 md:p-2">
+    <div className="grid md:gap-4 p-2">
+      <p className="text-xl font-bold underline">Your Top Tracks</p>
       {isSuccess &&
-        data.map((item: any) => (
-          <div key={item.id}>
+        data.slice(0, 7).map((item: any) => (
+          <div key={item.id} className="flex items-center gap-4 my-2 md:my-4">
             <div className="grid place-items-center">
               <img
-                className=""
+                className="h-12 w-12 object-cover"
                 src={item.album.images[0].url}
                 alt={item.name}
                 loading="lazy"
               />
             </div>
-            <div
-              className="grid"
-              style={{
-                justifyContent: "center",
-              }}
-            >
+            <div className="grid justify-center">
               <p className="text-center truncate font-bold">{item.name}</p>
             </div>
           </div>

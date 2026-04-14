@@ -29,7 +29,7 @@ export default function TopItemsPage() {
           </span>
         </div>
 
-        <div className="flex gap-x-4">
+        <div className="flex gap-x-4 items-center">
           <label>Select Time Range: </label>
           <select onChange={(e) => changeRange(e.target.value)}>
             <option value={"short_term"}>Last 4 Weeks</option>

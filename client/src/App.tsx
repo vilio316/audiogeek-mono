@@ -1,13 +1,31 @@
 import { FaSpotify } from "react-icons/fa6";
 import { authClient } from "./lib/authClient";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 function App() {
+  const navigate = useNavigate();
+
   async function login() {
     await authClient.signIn.social({
       provider: "spotify",
       callbackURL: "http://127.0.0.1:5173/dashboard",
     });
   }
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const sessionDetails = await authClient.getSession();
+      const { data, error } = sessionDetails;
+      if (!error && data) {
+        navigate("/dashboard");
+      }
+      if (error) {
+        window.alert("Login Unsuccessful");
+      }
+    };
+    checkUser();
+  }, []);
 
   return (
     <div className="grid place-items-center h-screen w-full">

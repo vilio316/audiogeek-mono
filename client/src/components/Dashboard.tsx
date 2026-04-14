@@ -20,6 +20,7 @@ export default function DashboardPage() {
     });
   }
 
+  //User session check
   useEffect(() => {
     const checkUser = async () => {
       const sessionDetails = await authClient.getSession();
@@ -39,7 +40,7 @@ export default function DashboardPage() {
   return (
     <>
       <div className="flex w-full my-2 items-center">
-        <Link to="/dashboard" className="text-2xl font-bold p-4 w-[90%]">
+        <Link to="/dashboard" className="text-2xl font-bold p-4 w-[95%]">
           Audiogeek
         </Link>
         <div className="flex gap-x-4">
@@ -58,9 +59,9 @@ export default function DashboardPage() {
           <p>Your Spotify ID : {id}</p>
         </div>
       </div>
-      {/*
+
       <TopTracksPreview />
-      <RecentlyPlayed /> */}
+      <RecentlyPlayed />
       <p className="w-full text-center">
         Audiogeek. Developed in 2026 by vilio316{" "}
       </p>
