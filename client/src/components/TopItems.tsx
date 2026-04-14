@@ -1,6 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { useRef, useState } from "react";
-import { FaGreaterThan, FaLessThan } from "react-icons/fa6";
+import {
+  FaDownload,
+  FaGreaterThan,
+  FaLessThan,
+  FaShare,
+} from "react-icons/fa6";
 import { FiArrowRight } from "react-icons/fi";
 import { Link } from "react-router";
 import * as htmlToImage from "html-to-image";
@@ -183,6 +188,40 @@ export function TopItemsImage({
     link.click();
   };
 
+  const makeImageToShare = async (timeframe: string) => {
+    if (!elementRef.current) return;
+    const fileBlob = await htmlToImage.toBlob(elementRef.current);
+    if (!fileBlob) return null;
+    const createdFile = new File([fileBlob], `user_review_${timeframe}.png`, {
+      type: `image/png`,
+    });
+    return createdFile;
+  };
+
+  async function shareImage(timeframe: string): Promise<void> {
+    if (!navigator.canShare || !navigator.share) {
+      throw new Error("Web Share API not supported");
+    }
+    const file = await makeImageToShare(timeframe);
+
+    if (!file) {
+      throw new Error("File could not be generated");
+    }
+    const canShareFiles = navigator.canShare({
+      files: [file],
+    });
+
+    if (!canShareFiles) {
+      throw new Error("File sharing not supported on this device");
+    }
+
+    await navigator.share({
+      files: [file],
+      title: "Shared Image",
+      text: "Check this out!",
+    });
+  }
+
   const resolveTimeRangeToString = (time_range: string) => {
     if (time_range === "short_term") return "4-week";
     if (time_range === "medium_term") return "6-month";
@@ -193,7 +232,10 @@ export function TopItemsImage({
   return (
     <>
       {profileDetails && (
-        <div className="text-white p-2 md:p-4" ref={elementRef}>
+        <div
+          className="text-white bg-linear-150 from-purple-900/90 to-gray-500 p-2 md:p-4"
+          ref={elementRef}
+        >
           <div className="md:flex gap-x-4 p-2 items-center">
             <img
               src={profileDetails.images ? profileDetails.images[0].url : null}
@@ -209,7 +251,18 @@ export function TopItemsImage({
                 review!
               </p>
             </div>
-            <button onClick={() => downloadHandler(timeframe)}>Download</button>
+            <div className="flex gap-x-4 items-center">
+              <FaDownload
+                onClick={() => downloadHandler(timeframe)}
+                className="w-6 h-6 inline"
+              />
+              <FaShare
+                className="w-6 h-6 inline"
+                onClick={() => {
+                  shareImage(timeframe);
+                }}
+              />
+            </div>
           </div>
 
           <div className="grid">
@@ -275,7 +328,7 @@ function ArtistsImageView({ time_range }: { time_range: string }) {
         artists.slice(0, 5).map((artist: any) => (
           <div className="flex gap-x-1 md:gap-x-2 items-center" key={artist.id}>
             <img
-              className="w-12 h-12 md:my-4 my-2 rounded-full"
+              className="w-12 h-12 my-2 rounded-full"
               src={artist.images[0].url}
               alt={artist.name}
               loading="lazy"
@@ -306,21 +359,25 @@ function TracksShort({ time_range }: { time_range: string }) {
   });
 
   return (
-    <div className="grid md:gap-4 p-2">
+    <div className="grid md:gap-x-4 p-2">
       <p className="text-xl font-bold underline">Your Top Tracks</p>
       {isSuccess &&
         data.slice(0, 7).map((item: any) => (
-          <div key={item.id} className="flex items-center gap-4 my-2 md:my-4">
+          <div key={item.id} className="flex items-center gap-4 my-2 ">
             <div className="grid place-items-center">
               <img
-                className="h-12 w-12 object-cover"
+                className="h-12 w-12 md:w-18 md:h-18 object-cover"
                 src={item.album.images[0].url}
                 alt={item.name}
                 loading="lazy"
               />
             </div>
             <div className="grid justify-center">
-              <p className="text-center truncate font-bold">{item.name}</p>
+              <p className="truncate font-bold">{item.name}</p>
+              <p className="flex gap-x-2">
+                <span>{item.artists[0].name}</span>|{" "}
+                <span className="hidden md:inline">{item.album.name}</span>
+              </p>
             </div>
           </div>
         ))}

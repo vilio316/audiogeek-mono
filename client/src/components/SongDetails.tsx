@@ -28,6 +28,7 @@ export default function SongDetails() {
       const songResponse = await songRequest.json();
       return songResponse;
     },
+    staleTime: 2 * 60 * 60 * 1000,
   });
   return (
     <>
