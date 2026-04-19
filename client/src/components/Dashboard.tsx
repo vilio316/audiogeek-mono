@@ -3,6 +3,7 @@ import { authClient } from "../lib/authClient";
 import type { User } from "../types/user";
 import { TopTracksPreview } from "./TopItems";
 import RecentlyPlayed from "./RecentlyPlayed";
+import { NowPlaying } from "./NowPlaying";
 
 export default function DashboardPage() {
   const [userDetails, updateUserDetails] = useState({} as User);
@@ -37,7 +38,7 @@ export default function DashboardPage() {
           <p>Your Spotify ID : {id}</p>
         </div>
       </div>
-
+      <NowPlaying />
       <TopTracksPreview />
       <RecentlyPlayed />
       <p className="w-full text-center">Audiogeek. @vilio316 </p>

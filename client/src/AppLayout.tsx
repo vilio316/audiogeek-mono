@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import { FaHamburger } from "react-icons/fa";
+import { MdOutlineMenu } from "react-icons/md";
 import { FiLogOut } from "react-icons/fi";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
@@ -19,13 +19,13 @@ export default function AppLayout() {
 
   const navigate = useNavigate();
   return (
-    <div className="p-2 md:p-4 mx-auto relative">
+    <div className="px-1 md:px-2 mx-auto relative">
       <div className="flex w-full my-1 items-center">
         <Link to="/dashboard" className="text-2xl font-bold p-4 w-[95%]">
           Audiogeek
         </Link>
         <div className="flex gap-x-4">
-          <FaHamburger
+          <MdOutlineMenu
             className="inline w-8 h-8 justify-self-end"
             onClick={() => showHamburger(true)}
           />
@@ -33,7 +33,7 @@ export default function AppLayout() {
         </div>
       </div>
       <div
-        className={`absolute top-0 right-0 p-4 text-xl font-bold ${isHamburgerMenu ? "grid" : "hidden"} z-20 bg-white w-1/4 md:h-64 h-48`}
+        className={`absolute top-0 right-0 p-4 text-xl font-bold ${isHamburgerMenu ? "grid" : "hidden"} z-20 bg-white md:w-1/4 w-full h-64`}
       >
         <span
           className="w-full text-right p-1 hover:text-red-600"
@@ -42,10 +42,8 @@ export default function AppLayout() {
           x
         </span>
         <Link to="/dashboard">Home</Link>
-        <a>Home</a>
-        <a>Home</a>
-        <a>Home</a>
-        <a>Home</a>
+        <Link to="/top">Your Top Items</Link>
+        <Link to="/dashboard">Search</Link>
       </div>
       <Outlet />
     </div>

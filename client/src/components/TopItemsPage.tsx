@@ -1,5 +1,6 @@
 import { useState } from "react";
-import TopTracks, { TopArtists, TopItemsImage } from "./TopItems";
+import TopTracks, { TopArtists } from "./TopItems";
+import { TopItemsImage } from "./TopItemsImage";
 import { FiX } from "react-icons/fi";
 import { useSearchParams } from "react-router";
 
@@ -16,9 +17,9 @@ export default function TopItemsPage() {
   const [imagePreview, changePreviewState] = useState(false);
 
   return (
-    <div className="p-3 md:p-6 grid relative">
+    <div className="p-2 md:p-4 grid relative">
       <div>
-        <p className="font-bold text-3xl">Your Top Items</p>
+        <p className="font-bold md:text-3xl text-2xl">Your Top Items</p>
         <div className="items-center w-full grid md:grid-cols-4">
           <div className="gap-x-4 flex p-2 md:col-span-3">
             <button
@@ -38,10 +39,10 @@ export default function TopItemsPage() {
           </div>
 
           <span
-            className="col-span-1 text-center w-4/5 bg-green-500 justify-self-end text-white p-2 rounded-xl"
+            className="col-span-1 text-center w-3/5 bg-green-500 justify-self-end text-white md:p-2 p-1 rounded-xl"
             onClick={() => changePreviewState(true)}
           >
-            Generate Top Items Image
+            Generate Image
           </span>
         </div>
 
@@ -71,7 +72,7 @@ export default function TopItemsPage() {
       </div>
 
       {imagePreview && (
-        <div className="absolute z-20 top-0 w-screen min-h-screen imageModal md:p-6 bg-linear-150 from-purple-900/90 to-gray-500">
+        <div className="absolute z-20 -top-16 w-screen min-h-screen imageModal md:p-4 p-1 bg-linear-150 from-purple-900/90 to-gray-500">
           <span className="w-full justify-end flex">
             <FiX
               className="h-6 w-6"
@@ -79,14 +80,10 @@ export default function TopItemsPage() {
             />
           </span>
           <TopItemsImage
-            timeframe={
-              searchParams ? String(searchParams.get("range")) : "short_term"
-            }
+            timeframe={searchParams ? String(range) : "short_term"}
           />
         </div>
       )}
     </div>
   );
 }
-
-/*className="p-2 bg-linear-180 from-purple-900 to-zinc-800 " */

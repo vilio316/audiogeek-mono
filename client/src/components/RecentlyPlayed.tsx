@@ -24,8 +24,8 @@ export default function RecentlyPlayed() {
       <div>
         {isSuccess &&
           recentlyPlayed.slice(0, 5).map((item: any) => (
-            <div key={item.id} className="grid gap-x-4 items-center my-2 p-2">
-              <div className="grid grid-cols-6 items-center">
+            <div key={item.id} className="grid items-center my-2 p-2">
+              <div className="grid grid-cols-6 gap-x-2 md:gap-x-4 items-center">
                 <div className="grid col-span-2 place-items-center">
                   <img
                     src={item.track.album.images[1].url}
@@ -33,11 +33,11 @@ export default function RecentlyPlayed() {
                   />
                 </div>
                 <div className="md:p-2 col-span-3">
-                  <a href={`/song/${item.track.id}`} className="block text-xl">
+                  <a href={`/song/${item.track.id}`} className="block">
                     {item.track.name}
                   </a>
                   <a
-                    className={`block`}
+                    className={`block text-sm`}
                     href={`/artists/${item.track.artists[0].id}`}
                   >
                     {item.track.album.artists[0].name}
