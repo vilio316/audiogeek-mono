@@ -148,7 +148,7 @@ spotifyRouter.get("/album/:id", async (req, res) => {
   res.json(album);
 });
 
-//broken, 400 Bad Request
+//broken, 400 Bad Request, needs to be fixed asap
 spotifyRouter.get("/artist-albums/:id", async (req, res) => {
   const session = await auth.api.getSession({
     headers: req.headers,

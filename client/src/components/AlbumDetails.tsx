@@ -8,7 +8,7 @@ export default function AlbumDetails() {
     queryKey: ["album_details", params.id],
     queryFn: async () => {
       const albumReq = await fetch(
-        `https://audiogeek-mono.onrender.com/apii/album/${params.id}`,
+        `${import.meta.env.VITE_SERVER_URL}/apii/album/${params.id}`,
         {
           credentials: "include",
         },
@@ -23,7 +23,7 @@ export default function AlbumDetails() {
     <>
       {isSuccess && (
         <>
-          <div id="song_card" className="grid md:grid-cols-4 p-4">
+          <div id="song_card" className="flex shrink-0 p-2 gap-x-3 md:gap-x-5 ">
             <div style={{ display: "grid", placeItems: "center" }}>
               <img
                 src={data.images[1].url}
@@ -32,7 +32,7 @@ export default function AlbumDetails() {
               />
             </div>
             <div style={{ alignSelf: "center" }}>
-              <h2>{data.name}</h2>
+              <p className="font-bold text-xl md:my-2 my-1">{data.name}</p>
               <p>
                 Artist(s):
                 {data.artists.length > 1 ? (
@@ -62,18 +62,15 @@ export default function AlbumDetails() {
               <p>Release Date: {data.release_date}</p>
             </div>
           </div>
-          <div
-            style={{
-              padding: "0.5rem",
-              display: "grid",
-              justifySelf: "center",
-              width: "95%",
-              marginTop: "1rem",
-            }}
-          >
+          <div className="md:p-8 p-3 grid justify-self-center w-full mx-auto my-2">
             {data.tracks.items.map((track: any) => (
-              <div className="side_number flex gap-x-4" key={track.id}>
-                <p>{data.tracks.items.indexOf(track) + 1}.</p>
+              <div
+                className="side_number flex gap-x-4 items-center"
+                key={track.id}
+              >
+                <p className="font-bold text-right">
+                  {data.tracks.items.indexOf(track) + 1}.
+                </p>
                 <SongInAlbum object={track} />
               </div>
             ))}

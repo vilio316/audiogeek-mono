@@ -9,8 +9,10 @@ export const makeTimeString = (ms_value: number) => {
   let secondString = "";
   if (seconds < 10) {
     secondString = "0" + String(seconds);
+  } else {
+    secondString = String(seconds);
   }
-  return `${minutes}:${seconds}`;
+  return `${minutes}:${secondString}`;
 };
 
 export default function SongDetails() {
@@ -20,7 +22,7 @@ export default function SongDetails() {
     queryKey: ["song_details", params.id],
     queryFn: async () => {
       const songRequest = await fetch(
-        `https://audiogeek-mono.onrender.com/apii/track/${params.id}`,
+        `${import.meta.env.VITE_SERVER_URL}/apii/track/${params.id}`,
         {
           credentials: "include",
         },
@@ -69,7 +71,7 @@ export default function SongDetails() {
                 <img
                   src={data.album.images[1].url}
                   alt={`${data.name}`}
-                  style={{ display: "block", width: "85%" }}
+                  className="block w-[90%] border border-black"
                 />
               </div>
               <div className="items-center grid content-center">
@@ -77,10 +79,7 @@ export default function SongDetails() {
                   Album :{" "}
                   <Link
                     to={`/albums/${data.album.id}`}
-                    style={{
-                      textDecoration: "underline",
-                      fontWeight: "bold",
-                    }}
+                    className="font-bold underline"
                   >
                     {data.album.name}
                   </Link>
@@ -98,13 +97,13 @@ export default function SongDetails() {
                     Popularity Score: {data.popularity}
                   </p>
                 )}
+                <div className="flex gap-x-4">
+                  <FaSpotify className="w-8 h-8 fill-green-600" />
+                  <p className="underline text-xl">
+                    <a href={data.external_urls.spotify}>Listen on Spotify</a>
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="flex gap-x-4">
-              <FaSpotify className="w-8 h-8 fill-green-600" />
-              <p className="underline text-xl">
-                <a href={data.external_urls.spotify}>Listen on Spotify</a>
-              </p>
             </div>
           </div>
         </>

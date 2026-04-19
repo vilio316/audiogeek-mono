@@ -15,7 +15,7 @@ export default function TopTracks({ time_range }: { time_range: string }) {
     queryKey: ["top_tracks", time_range],
     queryFn: async () => {
       const resultsReq = await fetch(
-        `https://audiogeek-mono.onrender.com/apii/top-tracks/${time_range}`,
+        `${import.meta.env.VITE_SERVER_URL}/apii/top-tracks/${time_range}`,
         {
           credentials: "include",
         },
@@ -27,8 +27,8 @@ export default function TopTracks({ time_range }: { time_range: string }) {
   });
 
   return (
-    <div className="p-2">
-      <div className="grid md:grid-cols-5 grid-cols-3 md:gap-4 gap-2 md:p-2">
+    <div className="my-2 md:my-0">
+      <div className="grid md:grid-cols-5 grid-cols-3 gap-4 md:p-2">
         {isSuccess &&
           value.map((item: any) => (
             <Link key={item.id} to={`/song/${item.id}`}>
@@ -60,7 +60,7 @@ export function TopTracksPreview() {
     queryKey: ["top_tracks_short"],
     queryFn: async () => {
       const resultsReq = await fetch(
-        "https://audiogeek-mono.onrender.com/apii/top-tracks/short_term",
+        `${import.meta.env.VITE_SERVER_URL}/apii/top-tracks/short_term`,
         {
           credentials: "include",
         },
@@ -74,7 +74,6 @@ export function TopTracksPreview() {
   return (
     <div className="p-4">
       <p className="font-bold text-2xl">Your Top Tracks This Month</p>
-      <p>{import.meta.env.VITE_TEST_KEY}</p>
       <div className="flex gap-x-4 items-center">
         <div className="flex md:gap-6 gap-x-4 md:py-2 w-[90%] overflow-x-scroll">
           {isPending && <p>Still looking...</p>}
@@ -115,7 +114,7 @@ export function TopArtists({ range }: { range: string }) {
     queryKey: ["top_artists", range],
     queryFn: async () => {
       const resultsReq = await fetch(
-        `https://audiogeek-mono.onrender.com/apii/top-artists/${range}`,
+        `${import.meta.env.VITE_SERVER_URL}/apii/top-artists/${range}`,
         {
           credentials: "include",
         },
@@ -127,14 +126,14 @@ export function TopArtists({ range }: { range: string }) {
 
   return (
     <>
-      <div className="grid md:grid-cols-5 gap-4">
+      <div className="grid md:grid-cols-5 grid-cols-3 gap-4">
         {artistsArray ? (
           <>
             {artistsArray.items.map((item: any) => (
               <div key={item.id}>
                 <div className="place-items-center grid mt-3">
                   <img
-                    className="md:h-48"
+                    className="md:h-48 sm:h-36 h-32 object-cover"
                     src={item.images[0].url}
                     alt={item.name}
                     loading="lazy"
@@ -165,7 +164,7 @@ export function TopItemsImage({
     queryKey: ["profile"],
     queryFn: async () => {
       const profile = await fetch(
-        "https://audiogeek-mono.onrender.com/apii/profile",
+        `${import.meta.env.VITE_SERVER_URL}/apii/profile`,
         {
           credentials: "include",
         },
@@ -309,7 +308,7 @@ function ArtistsImageView({ time_range }: { time_range: string }) {
     queryKey: ["top_artists", time_range],
     queryFn: async () => {
       const resultsReq = await fetch(
-        `https://audiogeek-mono.onrender.com/apii/top-artists/${time_range}`,
+        `${import.meta.env.VITE_SERVER_URL}/apii/top-artists/${time_range}`,
         {
           credentials: "include",
         },
@@ -347,7 +346,7 @@ function TracksShort({ time_range }: { time_range: string }) {
     queryKey: ["top_tracks", time_range],
     queryFn: async () => {
       const resultsReq = await fetch(
-        `https://audiogeek-mono.onrender.com/apii/top-tracks/${time_range}`,
+        `${import.meta.env.VITE_SERVER_URL}/apii/top-tracks/${time_range}`,
         {
           credentials: "include",
         },

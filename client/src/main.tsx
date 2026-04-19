@@ -9,6 +9,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import TestRoute from "./components/QueryTest.tsx";
 import SongDetails from "./components/SongDetails.tsx";
 import AlbumDetails from "./components/AlbumDetails.tsx";
+import ArtistInformation from "./components/ArtistInformation.tsx";
+import AppLayout from "./AppLayout.tsx";
 
 const queryClient = new QueryClient();
 
@@ -24,32 +26,38 @@ window.__TANSTACK_QUERY_CLIENT__ = queryClient;
 const router = createBrowserRouter([
   {
     path: "/",
+    Component: App,
+    index: true,
+  },
+  {
+    path: "/",
+    Component: AppLayout,
     children: [
-      {
-        index: true,
-        Component: App,
-      },
       {
         path: "/top",
         Component: TopItemsPage,
       },
+      {
+        path: "/dashboard",
+        Component: DashboardPage,
+      },
+      {
+        path: "/test",
+        Component: TestRoute,
+      },
+      {
+        path: `/song/:id`,
+        Component: SongDetails,
+      },
+      {
+        path: `/albums/:id`,
+        Component: AlbumDetails,
+      },
+      {
+        path: `/artists/:id`,
+        Component: ArtistInformation,
+      },
     ],
-  },
-  {
-    path: "/dashboard",
-    Component: DashboardPage,
-  },
-  {
-    path: "/test",
-    Component: TestRoute,
-  },
-  {
-    path: `/song/:id`,
-    Component: SongDetails,
-  },
-  {
-    path: `/albums/:id`,
-    Component: AlbumDetails,
   },
 ]);
 

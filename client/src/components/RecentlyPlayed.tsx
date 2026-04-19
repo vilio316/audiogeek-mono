@@ -6,7 +6,7 @@ export default function RecentlyPlayed() {
     queryFn: async () => {
       {
         const recentlyRequest = await fetch(
-          "https://audiogeek-mono.onrender.com/apii/recently-played",
+          `${import.meta.env.VITE_SERVER_URL}/apii/recently-played`,
           {
             credentials: "include",
           },
@@ -19,7 +19,7 @@ export default function RecentlyPlayed() {
   });
 
   return (
-    <div className="p-6 md:w-1/3">
+    <div className="md:p-4 p-2 md:w-1/3">
       <p className="text-xl font-bold my-4">Recently Played</p>
       <div>
         {isSuccess &&
