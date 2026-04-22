@@ -11,6 +11,7 @@ import SongDetails from "./components/SongDetails.tsx";
 import AlbumDetails from "./components/AlbumDetails.tsx";
 import ArtistInformation from "./components/ArtistInformation.tsx";
 import AppLayout from "./AppLayout.tsx";
+import SearchPage from "./components/SearchPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: `/artists/:id`,
         Component: ArtistInformation,
+      },
+      {
+        path: "search",
+        Component: SearchPage,
       },
     ],
   },

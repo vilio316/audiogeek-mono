@@ -30,7 +30,7 @@ export class SpotifyService {
   static async refreshToken(account) {
     const key = account._id.toString();
     if (refreshLocks.has(key)) {
-      return refreshLocks.get(key); // return the in-flight promise
+      return refreshLocks.get(key);
     }
 
     const refreshPromise = (async () => {

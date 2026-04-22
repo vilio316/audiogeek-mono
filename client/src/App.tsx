@@ -31,7 +31,7 @@ function App() {
     <div className="grid place-items-center h-screen w-full">
       <button
         onClick={login}
-        className="flex bg-emerald-500 w-1/4 rounded-2xl p-2 justify-center items-center gap-x-4"
+        className="flex bg-emerald-500 md:w-1/4 w-3/5 rounded-2xl p-2 justify-center items-center gap-x-4"
       >
         <FaSpotify className="inline h-6 w-6" />
         <span className="text-xl font-bold">Log in with Spotify</span>

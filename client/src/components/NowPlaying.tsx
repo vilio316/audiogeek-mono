@@ -27,8 +27,11 @@ export function NowPlaying() {
     <>
       {isSuccess ? (
         <>
-          <h3 className="underline my-2">Now Playing: </h3>
-          <div id="np_wrapper" className="md:grid grid-cols-2 gap-x-4 md:w-3/5">
+          <h3 className="underline my-2 indent-2">Now Playing: </h3>
+          <div
+            id="np_wrapper"
+            className="md:grid grid-cols-2 gap-x-4 md:w-3/5 p-2 md:p-1"
+          >
             <div className="grid col-span-1" id="player">
               <SongFromSearch object={data.item} />
             </div>
@@ -125,10 +128,10 @@ export function SongFromSearch(props: any) {
           ></img>
         </div>
         <div key={object.id} className="p-1 col-span-3">
-          <p id="song_title">
+          <p id="song_title" className="text-xl">
             <a href={`/song/${object.id}`}>{object.name} </a>
           </p>
-          <p id="artistName">
+          <p id="artistName" className="text-sm">
             <a href={`/artists/${object.artists[0].id}`}>
               {object.artists[0].name}
             </a>

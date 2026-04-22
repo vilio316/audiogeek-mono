@@ -1,7 +1,7 @@
 import { createAuthClient } from "better-auth/client";
 
 export const authClient = createAuthClient({
-  baseURL: `https://audiogeek-mono.onrender.com`,
+  baseURL: import.meta.env.VITE_SERVER_URL,
   fetchOptions: {
     credentials: "include",
   },

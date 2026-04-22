@@ -66,7 +66,7 @@ export default function SongDetails() {
                 )}
               </span>
             </p>
-            <div id="song_card" className="grid grid-cols-4">
+            <div id="song_card" className="grid md:grid-cols-4">
               <div className="place-items-center p-2 col-span-1">
                 <img
                   src={data.album.images[1].url}

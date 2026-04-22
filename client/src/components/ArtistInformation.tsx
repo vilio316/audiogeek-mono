@@ -114,7 +114,6 @@ export default function ArtistInformation() {
               <h2>{data.name}</h2>
               <span></span>
             </div>
-            <Artist_Albums />
           </div>
         </>
       )}

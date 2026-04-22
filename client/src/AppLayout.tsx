@@ -20,7 +20,7 @@ export default function AppLayout() {
   const navigate = useNavigate();
   return (
     <div className="px-1 md:px-2 mx-auto relative">
-      <div className="flex w-full my-1 items-center">
+      <div className="flex w-full my-1 items-center sticky top-0 bg-white p-2">
         <Link to="/dashboard" className="text-2xl font-bold p-4 w-[95%]">
           Audiogeek
         </Link>
@@ -41,9 +41,15 @@ export default function AppLayout() {
         >
           x
         </span>
-        <Link to="/dashboard">Home</Link>
-        <Link to="/top">Your Top Items</Link>
-        <Link to="/dashboard">Search</Link>
+        <Link to="/dashboard" onClick={() => showHamburger(false)}>
+          Home
+        </Link>
+        <Link to="/top" onClick={() => showHamburger(false)}>
+          Your Top Items
+        </Link>
+        <Link to="/search" onClick={() => showHamburger(false)}>
+          Search
+        </Link>
       </div>
       <Outlet />
     </div>
