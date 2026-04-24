@@ -1,7 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 
 export default function RecentlyPlayed() {
-  const { data: recentlyPlayed, isSuccess } = useQuery({
+  const {
+    data: recentlyPlayed,
+    isSuccess,
+    isLoading,
+  } = useQuery({
     queryKey: ["recently-played"],
     queryFn: async () => {
       {
@@ -16,6 +20,7 @@ export default function RecentlyPlayed() {
       }
     },
     staleTime: 3 * 60 * 1000,
+    refetchInterval: 3 * 60 * 1000,
   });
 
   return (
@@ -47,6 +52,7 @@ export default function RecentlyPlayed() {
               </div>
             </div>
           ))}
+        {isLoading && <p>Loading recently played songs...</p>}
       </div>
     </div>
   );

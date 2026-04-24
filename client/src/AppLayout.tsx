@@ -20,7 +20,7 @@ export default function AppLayout() {
   const navigate = useNavigate();
   return (
     <div className="px-1 md:px-2 mx-auto relative">
-      <div className="flex w-full my-1 items-center sticky top-0 bg-white p-2">
+      <div className="flex w-full my-1 items-center sticky z-20 top-0 bg-white p-2">
         <Link to="/dashboard" className="text-2xl font-bold p-4 w-[95%]">
           Audiogeek
         </Link>

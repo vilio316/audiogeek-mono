@@ -1,9 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { FiArrowRight } from "react-icons/fi";
 import { Link } from "react-router";
+import { SpinnerLoader } from "./SpinnerLoader";
 
 export default function TopTracks({ time_range }: { time_range: string }) {
-  const { data: value, isSuccess } = useQuery({
+  const {
+    data: value,
+    isSuccess,
+    isLoading,
+  } = useQuery({
     queryKey: ["top_tracks", time_range],
     queryFn: async () => {
       const resultsReq = await fetch(
@@ -42,6 +47,7 @@ export default function TopTracks({ time_range }: { time_range: string }) {
               </div>
             </Link>
           ))}
+        {isLoading && <SpinnerLoader />}
       </div>
     </div>
   );
@@ -102,7 +108,7 @@ export function TopTracksPreview() {
 }
 
 export function TopArtists({ range }: { range: string }) {
-  const { data: artistsArray } = useQuery({
+  const { data: artistsArray, isLoading } = useQuery({
     queryKey: ["top_artists", range],
     queryFn: async () => {
       const resultsReq = await fetch(
@@ -118,6 +124,7 @@ export function TopArtists({ range }: { range: string }) {
 
   return (
     <>
+      {isLoading && <SpinnerLoader />}
       <div className="grid md:grid-cols-5 grid-cols-3 gap-4">
         {artistsArray ? (
           <>
@@ -136,7 +143,7 @@ export function TopArtists({ range }: { range: string }) {
             ))}
           </>
         ) : (
-          <p>Loading...</p>
+          <p>{""}</p>
         )}
       </div>
     </>

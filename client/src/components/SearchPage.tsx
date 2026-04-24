@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router";
 import { SongFromSearch } from "./NowPlaying";
+import { SpinnerLoader } from "./SpinnerLoader";
 
 export default function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -11,7 +12,6 @@ export default function SearchPage() {
   const {
     data: searchResults,
     isSuccess,
-    error,
     isLoading,
   } = useQuery({
     queryKey: ["search", searchQuery],
@@ -45,7 +45,7 @@ export default function SearchPage() {
           ))}
         </div>
       )}
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <SpinnerLoader />}
     </div>
   );
 }

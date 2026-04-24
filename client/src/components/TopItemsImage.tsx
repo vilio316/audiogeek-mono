@@ -182,7 +182,7 @@ function ArtistsImageView({ time_range }: { time_range: string }) {
         artists.slice(0, 5).map((artist: any) => (
           <div className="flex gap-x-1 md:gap-x-2 items-center" key={artist.id}>
             <img
-              className="w-12 h-12 my-2 rounded-full"
+              className="w-18 h-18 my-2 rounded-full"
               src={artist.images[0].url}
               alt={artist.name}
               loading="lazy"

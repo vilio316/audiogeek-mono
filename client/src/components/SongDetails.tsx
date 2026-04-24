@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router";
 import { FaSpotify } from "react-icons/fa6";
+import { SpinnerLoader } from "./SpinnerLoader";
 
 export const makeTimeString = (ms_value: number) => {
   let second_val = Math.ceil(Number(ms_value / 1000));
@@ -18,7 +19,7 @@ export const makeTimeString = (ms_value: number) => {
 export default function SongDetails() {
   const params = useParams();
 
-  const { data, isSuccess } = useQuery({
+  const { data, isSuccess, isLoading } = useQuery({
     queryKey: ["song_details", params.id],
     queryFn: async () => {
       const songRequest = await fetch(
@@ -108,6 +109,7 @@ export default function SongDetails() {
           </div>
         </>
       )}
+      {isLoading && <SpinnerLoader />}
     </>
   );
 }
