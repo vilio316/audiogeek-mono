@@ -9,7 +9,7 @@ function App() {
   async function login() {
     await authClient.signIn.social({
       provider: "spotify",
-      callbackURL: "http://127.0.0.1:5173/dashboard",
+      callbackURL: import.meta.env.VITE_CLIENT_URL,
     });
   }
 

@@ -4,13 +4,21 @@ import cors from "cors";
 import { toNodeHandler } from "better-auth/node";
 import spotifyRouter from "./apiRouter.mjs";
 import { fetchWeekly } from "./services/musicBrainzService.mjs";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 app.use(
-  cors({
-    origin: "http://127.0.0.1:5173",
-    credentials: true,
-  }),
+  cors(
+    {
+      origin: process.env.CLIENT_URL,
+      credentials: true,
+    },
+    {
+      origin: "http://127.0.0.1:5173/",
+      credentials: true,
+    },
+  ),
 );
 app.set("trust proxy", 1);
 app.use("/test", async (req, res) => {

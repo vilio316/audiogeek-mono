@@ -39,7 +39,7 @@ export default function TopItemsPage() {
           </div>
 
           <span
-            className="col-span-1 text-center w-3/5 bg-green-500 justify-self-end text-white md:p-2 p-1 rounded-xl"
+            className="col-span-1 text-center w-3/5 bg-green-500 justify-self-end text-white md:p-2 p-1 rounded-xl font-bold"
             onClick={() => changePreviewState(true)}
           >
             Generate Image

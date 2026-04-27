@@ -6,7 +6,7 @@ import DashboardPage from "./components/Dashboard.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import TopItemsPage from "./components/TopItemsPage.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import TestRoute from "./components/QueryTest.tsx";
+
 import SongDetails from "./components/SongDetails.tsx";
 import AlbumDetails from "./components/AlbumDetails.tsx";
 import ArtistInformation from "./components/ArtistInformation.tsx";
@@ -41,10 +41,6 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         Component: DashboardPage,
-      },
-      {
-        path: "/test",
-        Component: TestRoute,
       },
       {
         path: `/song/:id`,
