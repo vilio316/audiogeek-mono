@@ -3,7 +3,7 @@ import { auth } from "./src/auth/auth.mjs";
 import cors from "cors";
 import { toNodeHandler } from "better-auth/node";
 import spotifyRouter from "./apiRouter.mjs";
-import { fetchWeekly } from "./services/musicBrainzService.mjs";
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -21,10 +21,6 @@ app.use(
   ),
 );
 app.set("trust proxy", 1);
-app.use("/test", async (req, res) => {
-  const test = await fetchWeekly();
-  res.json(test);
-});
 app.use("/apii", spotifyRouter);
 app.use("/api/auth", toNodeHandler(auth));
 
